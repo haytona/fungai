@@ -11,48 +11,49 @@ os.environ["OLLAMA_BASE_URL"] = "http://localhost:11434"
 
 
 @dataclass
-class GroceryItem:
+class ShoppingItem:
     name: str
-    weight_kg: float
     price: float = None
 
 
 @task
-def filter_prefix(items: List[GroceryItem], prefix: str) -> List[GroceryItem]:
-    """For every item, find items with name starting prefix matching prefix arg"""
-    pass
-
-@task
-def categorise(items: List[GroceryItem], category: str) -> List[GroceryItem]:
+def categorise(items: List[ShoppingItem], category: str) -> List[ShoppingItem]:
     """For every item, find items that are in the same category as category arg"""
     pass
 
 @task
-def estimate_price(items: List[GroceryItem]) -> List[GroceryItem]:
-    """For every item, estimate rough price in AUD based on weight_kg
+def estimate_price(items: List[ShoppingItem]) -> List[ShoppingItem]:
+    """For every item, estimate rough market price in AUD and
     then populate price attribute"""
+    pass
+
+@task
+def find_most_expensive(items: List[ShoppingItem]) -> ShoppingItem:
+    """Given all items, return only 1 item that is the most expensive"""
     pass
 
 
 if __name__ == "__main__":
     # Example usage
     items = [
-        GroceryItem("apple", 1),
-        GroceryItem("milk", 2),
-        GroceryItem("beef steak", 0.5),
-        GroceryItem("banana", 1),
-        GroceryItem("grape", 2)
+        ShoppingItem("apple"),
+        ShoppingItem("apple iphone 17 pro"),
+        ShoppingItem("milk"),
+        ShoppingItem("beef steak"),
+        ShoppingItem("banana"),
+        ShoppingItem("grape")
     ]
-    
-    # NLP problem: Find fruits
+    print(find_most_expensive(items))
+
+    # NLP, categorisation problem: Find fruits
     fruits = categorise(items, "fruits")
     print(f"Fruits: {fruits}")
-    # > Fruits: [GroceryItem(name='apple', weight_kg=1, price=None), GroceryItem(name='banana', weight_kg=1, price=None), GroceryItem(name='grape', weight_kg=2, price=None)]
+    # > Fruits: [ShoppingItem(name='apple', price=None), ShoppingItem(name='banana', price=None), ShoppingItem(name='grape', price=None)]
 
-    # Probabilistic problem: Enrich with price info
+    # Probabilistic problem: Enrich items with estimated price
     fruits = estimate_price(fruits)
     print(f"Fruits with price: {fruits}")
-    # > Fruits with price: [GroceryItem(name='apple', weight_kg=1, price=3.5), GroceryItem(name='banana', weight_kg=1, price=2.0), GroceryItem(name='grape', weight_kg=2, price=6.0)]
+    # > Fruits with price: [ShoppingItem(name='apple', price=3.5), ShoppingItem(name='banana', price=2.0), ShoppingItem(name='grape', price=6.0)]
 
     # Deterministic problem: Total price for Fruits
     total_price = sum(item.price for item in fruits if item.price is not None)
