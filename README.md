@@ -12,26 +12,12 @@ FungAI bridges the gap between natural language descriptions and code implementa
 - **Tool Integration**: Allows functions to call registered tools for complex workflows
 - **Multi-LLM Support**: Works with OpenAI, Ollama, and other providers
 
-## Key Features
-
-- `@task` decorator for AI-powered function implementation
-- `@tool` decorator for registering reusable functions
-- Automatic deterministic vs probabilistic task detection
-- Type validation and conversion
-- Environment-based LLM provider configuration
-
-## Installation
-
-```bash
-pip install fungai
-```
-
 ## Quick Start
 
 ### Step 1: Install FungAI
 
 ```bash
-pip install fungai
+pip install git+https://github.com/geeknam/fungai.git
 ```
 
 ### Step 2: Configure Environment
@@ -117,6 +103,13 @@ if __name__ == "__main__":
     # > Rough total price for fruits: 11.5 AUD
 ```
 
+## Key Features
+
+- `@task` decorator for AI-powered function implementation
+- `@tool` decorator for registering reusable functions
+- Automatic deterministic vs probabilistic task detection
+- Type validation and conversion
+- Environment-based LLM provider configuration
 
 ## How It Works
 
