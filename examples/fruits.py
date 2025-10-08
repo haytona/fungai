@@ -44,6 +44,7 @@ if __name__ == "__main__":
         ShoppingItem("grape")
     ]
     print(find_most_expensive(items))
+    # ShoppingItem(name='apple iphone 17 pro', price=None)
 
     # NLP, categorisation problem: Find fruits
     fruits = categorise(items, "fruits")
