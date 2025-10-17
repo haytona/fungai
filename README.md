@@ -24,12 +24,13 @@ pip install git+https://github.com/geeknam/fungai.git
 
 ```bash
 # For OpenAI (default)
-export OPENAI_API_KEY="your-api-key"
 export LLM_PROVIDER="openai"
+export OPENAI_API_KEY="your-api-key"
 
 # For Ollama
 export LLM_PROVIDER="ollama"
 export OLLAMA_BASE_URL="http://localhost:11434"
+export OLLAMA_MODEL="gemma3:4b"
 ```
 
 ### Step 3: Define Your Data Models
@@ -125,12 +126,12 @@ if __name__ == "__main__":
 
 | Variable | Description | Default |
 |----------|-------------|---------|
-| `LLM_PROVIDER` | LLM provider ("openai" or "ollama") | "openai" |
-| `OPENAI_API_KEY` | OpenAI API key | Required for OpenAI |
-| `OPENAI_MODEL` | OpenAI model name | "gpt-4o-mini" |
-| `OLLAMA_BASE_URL` | Ollama server URL | "http://localhost:11434" |
-| `OLLAMA_MODEL` | Ollama model name | "gemma3:4b" |
-| `OLLAMA_SEED` | Seed for reproducible results | "123" |
+| `LLM_PROVIDER`    | LLM provider ("openai" or "ollama") | "openai"                 |
+| `OPENAI_API_KEY`  | OpenAI API key                      | Required for OpenAI      |
+| `OPENAI_MODEL`    | OpenAI model name                   | "gpt-4o-mini"            |
+| `OLLAMA_BASE_URL` | Ollama server URL                   | "http://localhost:11434" |
+| `OLLAMA_MODEL`    | Ollama model name                   | "gemma3:4b"              |
+| `OLLAMA_SEED`     | Seed for reproducible results       | "123"                    |
 
 ### Exception Handling
 
@@ -150,6 +151,64 @@ except DeterministicException as e:
 - Handle `DeterministicException` for tasks that should be manually implemented
 - Register frequently used functions as `@tool` for reuse across tasks
 - Test with different LLM providers to find the best fit for your use case
+
+## Troubleshooting
+
+### python
+
+#### No module named 'requests'
+
+```bash
+# to solve: ModuleNotFoundError: No module named 'requests'
+pip install -r requirements.txt
+
+# run the example
+# note the example defaults provider to ollama if LLM_PROVIDER not set
+python examples/fruits.py
+```
+
+#### KeyError: 'response'
+
+This is an indicator that the response from ollama is an error.
+Doublecheck your env vars or installation of gemma3:4b model.
+The model version is required eg `gemma3:4b` not just `gemma`.
+
+### ollama
+
+If starting from scratch, you will need ollama and a model.
+
+#### installation
+
+Example below for mac os.
+
+```bash
+# install ollama
+brew install ollama
+
+# start it
+brew services start ollama
+```
+
+#### get a model
+
+```bash
+# download a model
+ollama pull gemma3:4b
+
+# check model is there
+ollama list
+# should display gemma3:4b
+```
+
+#### check ollama
+
+```bash
+curl http://localhost:11434/
+# should return: "Ollama is running"
+
+curl -s -d '{"model":"llama3","prompt":"hello","stream":false}' localhost:11434/api/generate
+# will return json response. pipe through `jq` for pretty print
+```
 
 ## License
 
